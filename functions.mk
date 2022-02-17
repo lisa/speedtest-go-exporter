@@ -3,7 +3,7 @@ help:
 	@echo "If using non-docker.io registry, you may need to set INSECURE=--insecure, for insecure registries"
 	@echo "May override IMG, REVISION and/or VERSION and ARCHES"
 	@echo "ARCHES defaults to: amd64 arm64"
-	@echo "IMG defaults to thedoh/lisa19 (because that's the author's namespace)"
+	@echo "IMG defaults to lisa/speedtest-exporter (because that's the author's namespace)"
 	@echo "Settings:"
 	@echo " * IMG=$(IMG)"
 	@echo " * REGISTRY=$(REGISTRY)"
