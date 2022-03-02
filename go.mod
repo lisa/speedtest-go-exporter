@@ -4,7 +4,7 @@ go 1.17
 
 require (
 	github.com/prometheus/client_golang v1.12.1
-	github.com/showwin/speedtest-go v1.1.4
+	github.com/showwin/speedtest-go v1.1.5
 	github.com/spf13/cobra v1.3.0
 	github.com/spf13/pflag v1.0.5
 	k8s.io/klog/v2 v2.40.1
