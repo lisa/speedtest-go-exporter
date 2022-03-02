@@ -2,6 +2,7 @@ package speedtest
 
 import (
 	"fmt"
+	"strings"
 	"time"
 
 	gospeedtest "github.com/showwin/speedtest-go/speedtest"
@@ -34,7 +35,7 @@ func (g *Speedtest) RunTest() error {
 	if err != nil {
 		return err
 	}
-	serverList, err := gospeedtest.FetchServerList(user)
+	serverList, err := gospeedtest.FetchServers(user)
 	if err != nil {
 		return err
 	}
@@ -42,6 +43,8 @@ func (g *Speedtest) RunTest() error {
 	if err != nil {
 		return err
 	}
+	// upstream String() includes \n, and it'd be better for output here if there weren't any \n
+	klog.V(2).Infof("Using server %s (hostname %s)", strings.ReplaceAll(targets[0].String(), "\n", ""), targets[0].Host)
 	g.TestStartTime = time.Now()
 	defer func() {
 		g.TestDuration = elapsed(g.TestStartTime)()
