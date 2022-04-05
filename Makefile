@@ -31,7 +31,8 @@ $(BIN_FILE): test vet
 
 .PHONY: docker-build
 docker-build:
-	@for build_arch in $(ARCHES); do \
+	@echo "Building githash $(GITHASH) into version $(VERSION)" ;\
+	for build_arch in $(ARCHES); do \
 		docker build --platform=linux/$$build_arch --build-arg=GITHASH=$(GITHASH) --build-arg=VERSION=$(VERSION) --build-arg=GOARCH=$$build_arch -t $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) . ;\
 		$(call set_image_arch,$(REGISTRY)/$(IMG):$$build_arch-$(VERSION),$$build_arch) ;\
 		if [[ $(TAG_LATEST) == "true" ]]; then \
