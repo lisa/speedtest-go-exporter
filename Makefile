@@ -33,7 +33,7 @@ $(BIN_FILE): test vet
 docker-build:
 	@echo "Building githash $(GITHASH) into version $(VERSION)" ;\
 	for build_arch in $(ARCHES); do \
-		docker build --platform=linux/$$build_arch --build-arg=GITHASH=$(GITHASH) --build-arg=VERSION=$(VERSION) --build-arg=GOARCH=$$build_arch -t $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) . ;\
+		docker build --platform=linux/$$build_arch --build-arg=GITHASH=$(GITHASH) --build-arg=VERSIONSTRING=$(VERSION) --build-arg=GOARCH=$$build_arch -t $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) . ;\
 		$(call set_image_arch,$(REGISTRY)/$(IMG):$$build_arch-$(VERSION),$$build_arch) ;\
 		if [[ $(TAG_LATEST) == "true" ]]; then \
 			docker tag $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) $(REGISTRY)/$(IMG):$$build_arch-latest ;\
@@ -49,6 +49,9 @@ docker-multiarch: docker-build
 		appends="$${appends} $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) " ;\
 		latestappends="$${latestappends} $(REGISTRY)/$(IMG):$$build_arch-latest " ;\
 		docker push $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) ;\
+		if [[ $(TAG_LATEST) == "true" ]]; then \
+			docker push $(REGISTRY)/$(IMG):$$build_arch-latest ;\
+		fi ;\
 	done ;\
 	docker manifest create $(REGISTRY)/$(IMG):$(VERSION) $$appends ;\
 	if [[ $(TAG_LATEST) == "true" ]]; then \
@@ -57,7 +60,7 @@ docker-multiarch: docker-build
 	for build_arch in $(ARCHES); do \
 		docker manifest annotate $(REGISTRY)/$(IMG):$(VERSION) $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) --os linux --arch $$build_arch ;\
 		if [[ $(TAG_LATEST) == "true" ]]; then \
-			docker manifest annotate $(REGISTRY)/$(IMG):latest $(REGISTRY)/$(IMG):$$build_arch-$(VERSION) --os linux --arch $$build_arch ;\
+			docker manifest annotate $(REGISTRY)/$(IMG):latest $(REGISTRY)/$(IMG):$$build_arch-latest --os linux --arch $$build_arch ;\
 		fi ;\
 	done ;\
 	echo "Done"
