@@ -32,6 +32,8 @@ Flags:
 
 ## Kubernetes
 
+Note: This example uses the `latest` tag of `quay.io/lisa/speedtest-exporter`. Some users may wish to pin to a specific version, which can be done by browsing the [available tags](https://quay.io/repository/lisa/speedtest-exporter?tab=tags) at quay.io. Additionally, the following Kubernetes YAML files can be found in [/manifests](/manifests), and used as the basis of more complex uses of the exporter.
+
 Create a `Deployment`:
 
 ```yaml
@@ -59,7 +61,7 @@ spec:
       - command:
         - /speedtest-exporter
         - exporter
-        image: quay.io/lisa/speedtest-exporter:22.02.10
+        image: quay.io/lisa/speedtest-exporter:latest
         imagePullPolicy: IfNotPresent
         name: speedtest-exporter
       restartPolicy: Always
@@ -126,7 +128,9 @@ Run the resulting `speedtest-exporter` binary, refer to above Usage.
 
 ## Container Images
 
-The [Makefile](/Makefile) will build for `arm64` and `amd64` Linux targets and tag for `quay.io/lisa/speedtest-exporter` using today's date as the version/tag with revision 1 (ex 2022.02.1). To build separate container images for `amd64`, `arm64` and `s390x` tagged `docker.io/thedoh/speedtest-exporter:1.0.5`:
+The [Makefile](/Makefile) will build for `arm64` and `amd64` Linux targets and tag for `quay.io/lisa/speedtest-exporter` using today's date as the version/tag with revision 1 (ex 2022.02.1).
+
+To build separate container images for `amd64`, `arm64` and `s390x` tagged `docker.io/thedoh/speedtest-exporter:1.0.5`:
 
 ```shell
 make ARCHES="amd64 arm64 s390x" REGISTRY="docker.io" IMG="thedoh/speedtest-exporter" REVISION=5 VERSION=1.0 docker-build
@@ -150,3 +154,6 @@ make ARCHES="amd64 arm64 s390x" REGISTRY="docker.io" IMG="thedoh/speedtest-expor
 
 Refer to the [ROADMAP.md](/ROADMAP.md) for details.
 
+# Grafana Dashboard
+
+A Grafana dashboard is included in this repository at [/grafana-dashboard.json](/grafana-dashboard.json).
